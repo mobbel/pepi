@@ -1,8 +1,7 @@
 # pepi
-##Perl Pipeline Runner
+## Perl Pipeline Runner
 
-###Dependencies
+### Dependencies
 
 Path::Tiny
-
 Log::Log4perl
