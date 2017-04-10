@@ -7,6 +7,8 @@ sub new {
   my ($or_self, $hr_variables) = @_;
 
   $hr_variables->{config} = {};
+  $hr_variables->{tasks} = {};
+  $hr_variables->{chains} = {};
 
   bless $hr_variables, $or_self;
 }
@@ -25,4 +27,14 @@ sub writeFiles {
 
 }
 
-return 1;
+sub registerTasks {
+  my ($or_self, $taskGroup, $tasks) = @_;
+  $or_self->{tasks}->{$taskGroup} = $tasks;
+}
+
+sub registerChains {
+  my ($or_self, $chainName, $taskGroups) = @_;
+  $or_self->{chains}->{$chainName} = $taskGroups;
+}
+
+1;

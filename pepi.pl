@@ -18,9 +18,16 @@ BEGIN {
 
 sub main {
   require classes::class_pepi;
+  require pepi_config;
+
   my $or_pepi = new classes::class_pepi({});
 
-  $or_pepi->setConfiguration('test')
+  pepi_config::loadConfiguration($or_pepi);
+
+  use Data::Dumper;
+  warn '##################### SS - Start #####################';
+  warn Data::Dumper::Dumper(\@ARGV);
+  warn '###################### SS - End ######################';
 }
 
 main();
