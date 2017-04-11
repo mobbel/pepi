@@ -24,10 +24,44 @@ sub main {
 
   pepi_config::loadConfiguration($or_pepi);
 
-  use Data::Dumper;
-  warn '##################### SS - Start #####################';
-  warn Data::Dumper::Dumper(\@ARGV);
-  warn '###################### SS - End ######################';
+  my $s_chain = checkForArgs(\@ARGV);
+
+  $or_pepi->loadChain($s_chain);
+}
+
+sub checkForArgs {
+  my ($ar_args) = @_;
+
+  foreach my $s_arg (@{$ar_args}) {
+    if($s_arg eq '--help') {
+      printHelp();
+      last;
+    }
+    else {
+      return $s_arg;
+      last;
+    }
+  }
+
+}
+
+sub printHelp {
+  use feature "say";
+  say '########################################################';
+  say '#                   Perl Pipe Runner                   #';
+  say '#                                                      #';
+  say '# --help - this help                                   #';
+  say '#                                                      #';
+  say '# usage:                                               #';
+  say '#                                                      #';
+  say '# ./pepi.pl <chain>                                    #';
+  say '#                                                      #';
+  say '########################################################';
+}
+
+sub printVersion {
+  use feature "say";
+  say 'Version 0.0.1'
 }
 
 main();

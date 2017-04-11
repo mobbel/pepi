@@ -5,8 +5,9 @@ sub loadConfiguration {
   $pepi->setConfiguration({
     htmlDev => {
       files         => {
-        cwd         => 'sourceDir',
-        src         => ['**/*.tt', '**/*.html'],
+        cwd         => '/mnt/d/Projekte/better-scripting.de/views',
+        recursive   => true,
+        src         => ['.tt', '.html'],
         destination => 'destinationDir', #otional
         ext         => 'tt', #optional
       },
@@ -23,11 +24,11 @@ sub loadConfiguration {
     },
   });
 
-  $pepi->registerTasks('html',[
+  $pepi->registerTask('html',[
     'htmlmin',
   ]);
 
-  $pepi->registerChains('htmlDev',[
+  $pepi->registerChain('htmlDev',[
     'html'
   ]);
 }
