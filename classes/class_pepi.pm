@@ -6,9 +6,10 @@ package classes::class_pepi;
 sub new {
   my ($or_self, $hr_variables) = @_;
 
-  $hr_variables->{config} = {};
-  $hr_variables->{tasks} = {};
-  $hr_variables->{chains} = {};
+  $hr_variables->{config}      = {};
+  $hr_variables->{tasks}       = {};
+  $hr_variables->{chains}      = {};
+  $hr_variables->{taskModules} = {};
 
   bless $hr_variables, $or_self;
 }
@@ -22,11 +23,6 @@ sub setConfiguration {
 sub readFiles {
   my ($or_self, $or_filesConfiguration) = @_;
   my $s_path = $or_filesConfiguration->{cwd};
-
-  use Data::Dumper;
-  warn '##################### SS - Start #####################';
-  warn Data::Dumper::Dumper($s_path);
-  warn '###################### SS - End ######################';
 
   opendir(DIR, $s_path) or die "Unable to open $s_path: $!";
   my @files =
@@ -67,15 +63,31 @@ sub loadChain {
   my $ar_taskGroups         = $or_self->{chains}->{$s_chain};
   my $or_chainConfiguration = $or_self->{config}->{$s_chain};
 
-  my @a_fileList = $or_self->readFiles($or_chainConfiguration->{files});
+  foreach my $task (@{$ar_taskGroups}) {
 
-  foreach my $file (@a_fileList) {
-    my $s_fileContent = $or_self->readFileContent($file);
+    my @a_fileList = $or_self->readFiles($or_chainConfiguration->{files});
 
-    use Data::Dumper;
-    warn '##################### SS - Start #####################';
-    warn Data::Dumper::Dumper($s_fileContent);
-    warn '###################### SS - End ######################';
+    foreach my $file (@a_fileList) {
+      my $s_fileContent = $or_self->readFileContent($file);
+      foreach my $x (@{$or_self->{tasks}->{$task}}) {
+        if($or_self->{taskModules}->{$task}) {
+
+        }
+        else {
+          # my $module = "task_";
+          # (my $file = $module) =~ s|::|/|g;
+          #  require $file . '.pm';
+          #  $module->import();
+        }
+      }
+
+
+
+      use Data::Dumper;
+      warn '##################### SS - Start #####################';
+      warn Data::Dumper::Dumper($ar_taskGroups);
+      warn '###################### SS - End ######################';
+    }
   }
 }
 
