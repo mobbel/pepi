@@ -69,24 +69,17 @@ sub loadChain {
 
     foreach my $file (@a_fileList) {
       my $s_fileContent = $or_self->readFileContent($file);
-      foreach my $x (@{$or_self->{tasks}->{$task}}) {
-        if($or_self->{taskModules}->{$task}) {
-
+      foreach my $module (@{$or_self->{tasks}->{$task}}) {
+        if(!$or_self->{taskModules}->{$module}) {
+          my $moduleName = "tasks::task_".$module;
+          (my $file = $moduleName) =~ s|::|/|g;
+          require $file . '.pm';
+          $or_self->{taskModules}->{$module} = $moduleName->new({
+            config => $or_self->{config}->{$module}
+          });
         }
-        else {
-          # my $module = "task_";
-          # (my $file = $module) =~ s|::|/|g;
-          #  require $file . '.pm';
-          #  $module->import();
-        }
+        $s_fileContent = $or_self->{taskModules}->{$module}->run($s_fileContent);
       }
-
-
-
-      use Data::Dumper;
-      warn '##################### SS - Start #####################';
-      warn Data::Dumper::Dumper($ar_taskGroups);
-      warn '###################### SS - End ######################';
     }
   }
 }
