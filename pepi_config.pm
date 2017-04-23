@@ -8,14 +8,14 @@ sub loadConfiguration {
         cwd         => '/mnt/d/Projekte/better-scripting.de/views',
         recursive   => true,
         src         => ['.tt', '.html'],
-        destination => 'destinationDir', #otional
+        destination => '/mnt/d/Projekte/testHtml', #otional
         ext         => 'tt', #optional
       },
     },
     htmlmin => {
       options => {
-        remove_comments => false,
-        remove_newlines => false,
+        remove_comments => 'true',
+        remove_newlines => 'true',
         do_javascript => false,
         do_stylesheet => false,
         no_compress_comment => false,

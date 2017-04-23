@@ -40,12 +40,28 @@ sub readFiles {
 sub readFileContent {
   my ($or_self, $s_file) = @_;
 
-  open(FH, $s_file);
-  return join('', <FH>);
+  open(my $FH, '<'.$s_file);
+  my $s_fileContent = join('', <$FH>);
+  close $FH;
+
+  return $s_fileContent;
 }
 
 sub writeFileContent {
+  my ($or_self, $s_fileContent, $s_file, $or_filesConfiguration) = @_;
 
+  use Data::Dumper;
+  warn '##################### SS - Start #####################';
+  warn Data::Dumper::Dumper($or_filesConfiguration);
+  warn '###################### SS - End ######################';
+
+  if($or_filesConfiguration->{destination} && $or_filesConfiguration->{destination} ne '') {
+    $s_file =~ s/$or_filesConfiguration->{cwd}/$or_filesConfiguration->{destination}/;
+  }
+
+  open(my $FH, '>'.$s_file) or die "Unable to create File: $!";
+  print $FH $s_fileContent;
+  close $FH;
 }
 
 sub registerTask {
@@ -80,6 +96,7 @@ sub loadChain {
         }
         $s_fileContent = $or_self->{taskModules}->{$module}->run($s_fileContent);
       }
+      $or_self->writeFileContent($s_fileContent, $file, $or_chainConfiguration->{files});
     }
   }
 }
